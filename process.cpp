@@ -21,7 +21,7 @@ using namespace std;
 // for matching /proc/<pid> entries
 static const regex is_number("\\d+");
 
-bool is_valid_pid(const string value)
+bool is_valid_pid(const string& value)
 {
     return regex_match(value, is_number);
 }
@@ -41,7 +41,7 @@ string get_process_name(const string& pid)
 	return line;
 }
 
-ProcessInfo get_process_info(string pid)
+ProcessInfo get_process_info(const string& pid)
 {
 	return {pid, get_process_name(pid), get_swap_for_pid(pid)};
 }

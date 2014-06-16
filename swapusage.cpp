@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		const string pidarg(argv[1]);
+		const string pidarg = argv[1];
 
 		if (pidarg == "-h" || pidarg == "--help")
 		{

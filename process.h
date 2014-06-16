@@ -16,13 +16,13 @@ struct ProcessInfo {
 static const std::string UNKNOWN_PROCESS_NAME = "<unknown>";
 
 // check whether a value denotes a valid pid
-bool is_valid_pid(const std::string value);
+bool is_valid_pid(const std::string& value);
 
 // get info for all processes
 std::vector<ProcessInfo> get_process_info();
 
 // get info for specific process
-ProcessInfo get_process_info(std::string pid);
+ProcessInfo get_process_info(const std::string& pid);
 
 #endif /* PROCESS_H_ */
 
