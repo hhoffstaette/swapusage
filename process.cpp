@@ -1,16 +1,11 @@
 
-#include <dirent.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-
-#include <cstdlib>
 #include <fstream>
-#include <iostream>
 #include <regex>
-#include <sstream>
 #include <string>
 #include <vector>
+
+// for opendir/dirent
+#include <dirent.h>
 
 #include "process.h"
 #include "swap.h"
