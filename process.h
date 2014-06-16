@@ -7,7 +7,8 @@
 #include <vector>
 
 // {pid, name, swap in kb}
-struct ProcessInfo {
+struct ProcessInfo
+{
 	std::string pid;
 	std::string name;
 	long swap;

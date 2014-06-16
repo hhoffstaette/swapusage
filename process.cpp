@@ -22,7 +22,7 @@ static const regex is_number("\\d+");
 
 bool is_valid_pid(const string& value)
 {
-    return regex_match(value, is_number);
+	return regex_match(value, is_number);
 }
 
 string get_process_name(const string& pid)
@@ -52,23 +52,23 @@ vector<ProcessInfo> get_process_info()
 	DIR* dir = opendir("/proc");
 	if (dir != NULL)
 	{
-        struct dirent* entry;
-        while ((entry = readdir(dir)) != NULL)
-        {
-            const string pid = entry->d_name;
-            if (is_valid_pid(pid))
-        	{
-        		long swap = get_swap_for_pid(pid);
-        		if (swap > 0)
-        		{
-        		    ProcessInfo proc = {pid, get_process_name(pid), swap};
-        		    procs.push_back(proc);
-        		}
-        	}
-        }
-        closedir(dir);
-    }
+		struct dirent* entry;
+		while ((entry = readdir(dir)) != NULL)
+		{
+			const string pid = entry->d_name;
+			if (is_valid_pid(pid))
+			{
+				long swap = get_swap_for_pid(pid);
+				if (swap > 0)
+				{
+					ProcessInfo proc = {pid, get_process_name(pid), swap};
+					procs.push_back(proc);
+				}
+			}
+		}
+		closedir(dir);
+	}
 
-    return procs;
+	return procs;
 }
 
