@@ -56,9 +56,8 @@ vector<ProcessInfo> get_process_info()
         struct dirent* entry;
         while ((entry = readdir(dir)) != NULL)
         {
-        	const char* name = entry->d_name;
-       	    const string pid = name;
-        	if (is_valid_pid(pid))
+            const string pid = entry->d_name;
+            if (is_valid_pid(pid))
         	{
         		long swap = get_swap_for_pid(pid);
         		if (swap > 0)
