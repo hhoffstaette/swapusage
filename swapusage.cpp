@@ -39,7 +39,8 @@ int main(int argc, char* argv[])
 		}
 
 		ProcessInfo proc = get_process_info(pidarg);
-		if (proc.name == UNKNOWN_PROCESS_NAME) {
+		if (proc.name == UNKNOWN_PROCESS_NAME)
+		{
 			cerr << "No such process: " << pidarg << endl;
 			return EXIT_FAILURE;
 		}
