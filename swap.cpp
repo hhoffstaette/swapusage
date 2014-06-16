@@ -9,10 +9,11 @@
 
 using namespace std;
 
+static const string SWAP_PREFIX = "Swap:";
+
 static long get_swap_for_smaps_fragment(const string& line)
 {
-	if (line.length() > 5 && line[0] == 'S' && line[1] == 'w' && line[2] == 'a'
-			&& line[3] == 'p' && line[4] == ':')
+	if (!line.compare(0, SWAP_PREFIX.length(), SWAP_PREFIX))
 	{
 		string value = substring_at(line, " ", 1);
 		if (value != "0")
