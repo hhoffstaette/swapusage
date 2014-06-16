@@ -21,39 +21,50 @@ using namespace std;
 // for matching /proc/<pid> entries
 static const regex is_number("\\d+");
 
-string get_process_name(const string& pid) {
+bool is_valid_pid(const string value)
+{
+    return regex_match(value, is_number);
+}
+
+string get_process_name(const string& pid)
+{
 	const string filename = "/proc/" + pid + "/comm";
+	string line = UNKNOWN_PROCESS_NAME;
 
 	ifstream in(filename);
-	if (in.is_open()) {
-		string line;
+	if (in.is_open())
+	{
 		getline(in, line);
-		return line;
 		in.close();
 	}
 
-	return "<unknown>";
+	return line;
 }
 
-SwappedProcess get_process_info(string pid) {
+ProcessInfo get_process_info(string pid)
+{
 	return {pid, get_process_name(pid), get_swap_for_pid(pid)};
 }
 
-vector<SwappedProcess> get_process_info() {
-	vector<SwappedProcess> procs;
+vector<ProcessInfo> get_process_info()
+{
+	vector<ProcessInfo> procs;
 
 	DIR* dir = opendir("/proc");
 	if (dir != NULL)
-    {
+	{
         struct dirent* entry;
-        while ((entry = readdir(dir)) != NULL) {
+        while ((entry = readdir(dir)) != NULL)
+        {
         	const char* name = entry->d_name;
-        	if (regex_match(name, is_number)) {
-        		string pid = string(name);
+       	    const string pid = name;
+        	if (is_valid_pid(pid))
+        	{
         		long swap = get_swap_for_pid(pid);
-        		if (swap > 0) {
-				    SwappedProcess proc = {pid, get_process_name(pid), swap};
-					procs.push_back(proc);
+        		if (swap > 0)
+        		{
+        		    ProcessInfo proc = {pid, get_process_name(pid), swap};
+        		    procs.push_back(proc);
         		}
         	}
         }

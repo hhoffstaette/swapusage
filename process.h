@@ -7,17 +7,22 @@
 #include <vector>
 
 // {pid, name, swap in kb}
-struct SwappedProcess {
+struct ProcessInfo {
 	std::string pid;
 	std::string name;
 	long swap;
 };
 
+static const std::string UNKNOWN_PROCESS_NAME = "<unknown>";
+
+// check whether a value denotes a valid pid
+bool is_valid_pid(const std::string value);
+
 // get info for all processes
-std::vector<SwappedProcess> get_process_info();
+std::vector<ProcessInfo> get_process_info();
 
 // get info for specific process
-SwappedProcess get_process_info(std::string pid);
+ProcessInfo get_process_info(std::string pid);
 
 #endif /* PROCESS_H_ */
 
