@@ -1,7 +1,7 @@
 
 #include <fstream>
-#include <sstream>
 #include <string>
+#include <stdio.h>
 
 #include "swap.h"
 #include "substring.h"
@@ -14,12 +14,11 @@ static long get_swap_for_smaps_fragment(const string& line)
 {
 	if (!line.compare(0, SWAP_PREFIX.length(), SWAP_PREFIX))
 	{
-		string value = substring_at(line, " ", 1);
+		const string value = substring_at(line, " ", 1);
 		if (value != "0")
 		{
 			long kb = 0;
-			istringstream iss(value);
-			if (!(iss >> std::dec >> kb).fail())
+			if (sscanf(value.c_str(), "%ld", &kb) == 1)
 			{
 				return kb;
 			}
