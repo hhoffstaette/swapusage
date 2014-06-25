@@ -9,7 +9,7 @@ using namespace std;
 
 static void usage()
 {
-	cerr << "Usage: swapusage [<pid>]" << endl;
+	cerr << "Usage: swapusage [pid]" << endl;
 }
 
 int main(int argc, char* argv[])
