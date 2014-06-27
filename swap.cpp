@@ -1,8 +1,7 @@
 
-#include <iostream>
 #include <fstream>
 #include <string>
-#include <stdio.h>
+//#include <stdio.h>
 
 #include "swap.h"
 #include "substring.h"
