@@ -49,6 +49,6 @@ long get_swap_for_pid(pid_t pid)
 		in.close();
 	}
 
-	return swap;
+	return (in.bad() ? UNKNOWN_SWAP : swap);
 }
 

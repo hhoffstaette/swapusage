@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "process.h"
+#include "swap.h"
 
 using namespace std;
 
@@ -39,13 +40,20 @@ int main(int argc, char* argv[])
 		}
 
 		ProcessInfo proc = get_process_info(pid);
+
 		if (proc.name == UNKNOWN_PROCESS_NAME)
 		{
 			cerr << "No such process: " << pid << endl;
 			return EXIT_FAILURE;
 		}
 
-		// finally collect process with swap
+		if (proc.swap == UNKNOWN_SWAP)
+		{
+			cerr << "Cannot read swap for pid: " << pid << endl;
+			return EXIT_FAILURE;
+		}
+
+		// finally collect valid process info
 		if (proc.swap > 0)
 		{
 			procs.push_back(proc);
