@@ -31,16 +31,17 @@ int main(int argc, char* argv[])
 			return EXIT_SUCCESS;
 		}
 
-		if (!is_valid_pid(pidarg))
+		int pid = to_pid(pidarg);
+		if (pid == UNKNOWN_PID)
 		{
 			cerr << "Not a process id: " << pidarg << endl;
-			return EXIT_SUCCESS;
+			return EXIT_FAILURE;
 		}
 
-		ProcessInfo proc = get_process_info(pidarg);
+		ProcessInfo proc = get_process_info(pid);
 		if (proc.name == UNKNOWN_PROCESS_NAME)
 		{
-			cerr << "No such process: " << pidarg << endl;
+			cerr << "No such process: " << pid << endl;
 			return EXIT_FAILURE;
 		}
 

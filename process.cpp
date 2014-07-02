@@ -3,8 +3,6 @@
 #include <regex>
 #include <string>
 #include <vector>
-
-// for opendir/dirent
 #include <dirent.h>
 
 #include "process.h"
@@ -15,14 +13,14 @@ using namespace std;
 // for matching /proc/<pid> entries
 static const regex is_number("\\d+");
 
-bool is_valid_pid(const string& value)
+pid_t to_pid(const string& value)
 {
-	return regex_match(value, is_number);
+	return regex_match(value, is_number) ? stoi(value) : UNKNOWN_PID;
 }
 
-string get_process_name(const string& pid)
+string get_process_name(pid_t pid)
 {
-	const string filename = "/proc/" + pid + "/comm";
+	const string filename = "/proc/" + to_string(pid) + "/comm";
 	string line = UNKNOWN_PROCESS_NAME;
 
 	ifstream in(filename);
@@ -35,7 +33,7 @@ string get_process_name(const string& pid)
 	return line;
 }
 
-ProcessInfo get_process_info(const string& pid)
+ProcessInfo get_process_info(pid_t pid)
 {
 	return {pid, get_process_name(pid), get_swap_for_pid(pid)};
 }
@@ -50,8 +48,8 @@ vector<ProcessInfo> get_process_info()
 		struct dirent* entry;
 		while ((entry = readdir(dir)) != NULL)
 		{
-			const string pid = entry->d_name;
-			if (is_valid_pid(pid))
+			pid_t pid = to_pid(entry->d_name);
+			if (pid != UNKNOWN_PID)
 			{
 				long swap = get_swap_for_pid(pid);
 				if (swap > 0)

@@ -1,7 +1,6 @@
 
 #include <fstream>
 #include <string>
-//#include <stdio.h>
 
 #include "swap.h"
 #include "substring.h"
@@ -30,9 +29,9 @@ static long get_swap(const string& line)
 	return 0;
 }
 
-long get_swap_for_pid(const string& pid)
+long get_swap_for_pid(pid_t pid)
 {
-	const string filename = "/proc/" + pid + "/smaps";
+	const string filename = "/proc/" + to_string(pid) + "/smaps";
 	long swap = 0;
 
 	ifstream in(filename);
