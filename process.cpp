@@ -1,22 +1,14 @@
 
 #include <fstream>
-#include <regex>
 #include <string>
 #include <vector>
 #include <dirent.h>
 
+#include "pid.h"
 #include "process.h"
 #include "swap.h"
 
 using namespace std;
-
-// for matching /proc/<pid> entries
-static const regex is_number("\\d+");
-
-pid_t to_pid(const string& value)
-{
-	return regex_match(value, is_number) ? stoi(value) : UNKNOWN_PID;
-}
 
 string get_process_name(pid_t pid)
 {

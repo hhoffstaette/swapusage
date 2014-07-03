@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "pid.h"
 #include "process.h"
 #include "swap.h"
 

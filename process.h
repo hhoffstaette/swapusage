@@ -2,7 +2,6 @@
 #ifndef PROCESS_H_
 #define PROCESS_H_
 
-#include <limits>
 #include <string>
 #include <vector>
 
@@ -14,11 +13,8 @@ struct ProcessInfo
 	long swap;
 };
 
-static const int UNKNOWN_PID = std::numeric_limits<pid_t>::max();
+// returned when the name of a process could not be determined
 static const std::string UNKNOWN_PROCESS_NAME = "<unknown>";
-
-// returns value as pid or UNKNOWN_PID
-pid_t to_pid(const std::string& value);
 
 // get info for all processes
 std::vector<ProcessInfo> get_process_info();
