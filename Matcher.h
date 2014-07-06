@@ -12,6 +12,8 @@ private:
 
 public:
 	Matcher(const std::string& expression);
+	Matcher(const Matcher& other) = delete;
+	Matcher& operator = (const Matcher& other) = delete;
 	~Matcher();
 
 	bool match(const std::string& value);
