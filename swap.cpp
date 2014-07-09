@@ -8,7 +8,7 @@
 using namespace std;
 
 static const string PREFIX = "Swap:";
-static const string SUFFIX = "0 kB";
+static const string SUFFIX = " 0 kB";
 
 static bool has_swap(const string& line)
 {
