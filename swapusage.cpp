@@ -1,4 +1,5 @@
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -67,13 +68,29 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
+		sort(procs.begin(), procs.end(), [](ProcessInfo& first, ProcessInfo& second)
+		{
+			return first.swap > second.swap;
+		});
+
+		cout << "====================================" << endl;
+		cout << "kB\tpid\tname" << endl;
+		cout << "====================================" << endl;
+
 		for (ProcessInfo& p: procs)
 		{
-			cout << "pid: " << p.pid;
-			cout << " name: " << p.name;
-			cout << " swap: " << p.swap << " KB";
-			cout << endl;
+			cout << p.swap << "\t"<< p.pid << "\t" << p.name << endl;
 		}
+
+		cout << "------------------------------------" << endl;
+
+		long swap = 0;
+		for_each(procs.begin(), procs.end(), [&swap](ProcessInfo &proc)
+		{
+			swap += proc.swap;
+		});
+
+		cout << "Overall Swap used: " << swap << endl;
 	}
 
 	return EXIT_SUCCESS;
