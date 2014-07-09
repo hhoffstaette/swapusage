@@ -10,11 +10,6 @@
 
 using namespace std;
 
-static void usage()
-{
-	cerr << "Usage: swapusage [pid]" << endl;
-}
-
 int main(int argc, char* argv[])
 {
 	vector<ProcessInfo> procs;
@@ -30,7 +25,7 @@ int main(int argc, char* argv[])
 
 		if (pidarg == "-h" || pidarg == "--help")
 		{
-			usage();
+			cerr << "Usage: swapusage [pid]" << endl;
 			return EXIT_SUCCESS;
 		}
 
@@ -68,10 +63,12 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		sort(procs.begin(), procs.end(), [](ProcessInfo& first, ProcessInfo& second)
+		auto orderBySwap = [](ProcessInfo& first, ProcessInfo& second)
 		{
 			return first.swap > second.swap;
-		});
+		};
+
+		sort(procs.begin(), procs.end(), orderBySwap);
 
 		cout << "====================================" << endl;
 		cout << "kB\tpid\tname" << endl;
@@ -85,10 +82,12 @@ int main(int argc, char* argv[])
 		cout << "------------------------------------" << endl;
 
 		long swap = 0;
-		for_each(procs.begin(), procs.end(), [&swap](ProcessInfo &proc)
+		auto accumulateSwap = [&swap](ProcessInfo &proc)
 		{
 			swap += proc.swap;
-		});
+		};
+
+		for_each(procs.begin(), procs.end(), accumulateSwap);
 
 		cout << "Overall Swap used: " << swap << endl;
 	}
