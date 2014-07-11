@@ -71,25 +71,19 @@ int main(int argc, char* argv[])
 		sort(procs.begin(), procs.end(), orderBySwap);
 
 		cout << "====================================" << endl;
-		cout << "kB\tpid\tname" << endl;
+		cout << "KB\tpid\tname" << endl;
 		cout << "====================================" << endl;
+
+		long swap = 0;
 
 		for (ProcessInfo& p: procs)
 		{
 			cout << p.swap << "\t"<< p.pid << "\t" << p.name << endl;
+			swap += p.swap;
 		}
 
 		cout << "------------------------------------" << endl;
-
-		long swap = 0;
-		auto accumulateSwap = [&swap](ProcessInfo &proc)
-		{
-			swap += proc.swap;
-		};
-
-		for_each(procs.begin(), procs.end(), accumulateSwap);
-
-		cout << "Overall Swap used: " << swap << endl;
+		cout << "Overall Swap used: " << swap << " KB" << endl;
 	}
 
 	return EXIT_SUCCESS;
