@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -march=native -O2 -fmessage-length=0 -Wall
 CXXSTDFLAGS = -std=c++11 -pipe
 LDFLAGS =
-OBJS = Matcher.o pid.o process.o swap.o substring.o swapusage.o 
+OBJS = pid.o process.o swap.o substring.o swapusage.o
 LIBS = 
 TARGET = swapusage
 
@@ -24,8 +24,7 @@ depend:
 
 # DO NOT DELETE
 
-Matcher.o: Matcher.h
-pid.o: Matcher.h pid.h
+pid.o: pid.h
 process.o: pid.h process.h swap.h
 substring.o: substring.h
 swap.o: swap.h substring.h
