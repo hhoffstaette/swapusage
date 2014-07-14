@@ -1,10 +1,14 @@
 CC = gcc
 CXX = g++
-CXXFLAGS = -std=c++11 -pipe -march=native -O2 -fmessage-length=0 -Wall
+CXXFLAGS = -march=native -O2 -fmessage-length=0 -Wall
+CXXSTDFLAGS = -std=c++11 -pipe
 LDFLAGS =
 OBJS = Matcher.o pid.o process.o swap.o substring.o swapusage.o 
 LIBS = 
 TARGET = swapusage
+
+%.o: %.cpp
+	$(CXX) $(CXXSTDFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
