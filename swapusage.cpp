@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		auto orderBySwap = [](ProcessInfo& first, ProcessInfo& second)
+		auto orderBySwap = [](const ProcessInfo& first, const ProcessInfo& second)
 		{
 			return first.swap > second.swap;
 		};
