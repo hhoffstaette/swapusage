@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -71,14 +72,20 @@ int main(int argc, char* argv[])
 		sort(procs.begin(), procs.end(), orderBySwap);
 
 		cout << "====================================" << endl;
-		cout << "KB\tpid\tname" << endl;
+		cout << setw(8) << "Swap KB";
+		cout << setw(6) << "pid";
+		cout << "  ";
+		cout << setw(16) << left << "name" << endl;
 		cout << "====================================" << endl;
 
 		long swap = 0;
 
 		for (ProcessInfo& p: procs)
 		{
-			cout << p.swap << "\t"<< p.pid << "\t" << p.name << endl;
+			cout << setw(8) << right << p.swap;
+			cout << setw(6) << right << p.pid;
+			cout << "  ";
+			cout << setw(16) << left << p.name << endl;
 			swap += p.swap;
 		}
 
