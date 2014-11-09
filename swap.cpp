@@ -26,7 +26,7 @@ static long get_swap(const string& line)
 		return kb;
 	}
 
-	return 0;
+	return UNKNOWN_SWAP;
 }
 
 long get_swap_for_pid(pid_t pid)
@@ -47,6 +47,10 @@ long get_swap_for_pid(pid_t pid)
 		}
 
 		in.close();
+	}
+	else
+	{
+		swap = UNKNOWN_SWAP;
 	}
 
 	return (in.bad() ? UNKNOWN_SWAP : swap);
