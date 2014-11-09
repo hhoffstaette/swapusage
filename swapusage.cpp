@@ -11,9 +11,16 @@
 
 using namespace std;
 
+// lambda for sorting by swap
+static auto orderBySwap = [](const ProcessInfo& first, const ProcessInfo& second)
+{
+	return first.swap > second.swap;
+};
+
 int main(int argc, char* argv[])
 {
 	vector<ProcessInfo> procs;
+	bool all_procs = true;
 
 	if (argc == 1)
 	{
@@ -37,24 +44,25 @@ int main(int argc, char* argv[])
 			return EXIT_FAILURE;
 		}
 
-		ProcessInfo proc = get_process_info(pid);
-
-		if (proc.name == UNKNOWN_PROCESS_NAME)
+		string name = get_process_name(pid);
+		if (name == UNKNOWN_PROCESS_NAME)
 		{
 			cerr << "No such process: " << pid << endl;
 			return EXIT_FAILURE;
 		}
 
-		if (proc.swap == UNKNOWN_SWAP)
+		long swap = get_swap_for_pid(pid);
+		if (swap == UNKNOWN_SWAP)
 		{
 			cerr << "Cannot read swap for pid: " << pid << endl;
 			return EXIT_FAILURE;
 		}
 
 		// finally collect valid process info
-		if (proc.swap > 0)
+		if (swap > 0)
 		{
-			procs.push_back(proc);
+			procs.emplace_back(pid, swap, name);
+			all_procs = false;
 		}
 	}
 
@@ -64,11 +72,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		auto orderBySwap = [](const ProcessInfo& first, const ProcessInfo& second)
-		{
-			return first.swap > second.swap;
-		};
-
+		// sort by swap
 		sort(procs.begin(), procs.end(), orderBySwap);
 
 		cout << "====================================" << endl;
@@ -78,7 +82,7 @@ int main(int argc, char* argv[])
 		cout << setw(16) << left << "name" << endl;
 		cout << "====================================" << endl;
 
-		long swap = 0;
+		long all_swap = 0;
 
 		for (ProcessInfo& p: procs)
 		{
@@ -86,11 +90,14 @@ int main(int argc, char* argv[])
 			cout << setw(6) << right << p.pid;
 			cout << "  ";
 			cout << setw(16) << left << p.name << endl;
-			swap += p.swap;
+			all_swap += p.swap;
 		}
 
-		cout << "------------------------------------" << endl;
-		cout << "Overall Swap used: " << swap << " KB" << endl;
+		if (all_procs)
+		{
+			cout << "------------------------------------" << endl;
+			cout << "Overall Swap used: " << all_swap << " KB" << endl;
+		}
 	}
 
 	return EXIT_SUCCESS;
