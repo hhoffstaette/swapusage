@@ -27,7 +27,7 @@ string get_process_name(pid_t pid)
 
 ProcessInfo get_process_info(pid_t pid)
 {
-	return {pid, get_process_name(pid), get_swap_for_pid(pid)};
+	return {pid, get_swap_for_pid(pid), get_process_name(pid)};
 }
 
 vector<ProcessInfo> get_process_info()
@@ -46,8 +46,7 @@ vector<ProcessInfo> get_process_info()
 				long swap = get_swap_for_pid(pid);
 				if (swap > 0)
 				{
-					ProcessInfo proc = {pid, get_process_name(pid), swap};
-					procs.push_back(proc);
+					procs.emplace_back(pid, swap, get_process_name(pid));
 				}
 			}
 		}
