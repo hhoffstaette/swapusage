@@ -1,6 +1,6 @@
 
-#include <fstream>
 #include <string>
+#include <stdio.h>
 
 #include "swap.h"
 #include "substring.h"
@@ -34,25 +34,23 @@ long get_swap_for_pid(pid_t pid)
 	const string filename = "/proc/" + to_string(pid) + "/smaps";
 	long swap = 0;
 
-	ifstream in(filename);
-	if (in.is_open())
+	FILE* input = fopen(filename.c_str(), "r");
+	if (input != nullptr)
 	{
 		string line;
-		while (getline(in, line))
+		char inputline[64];
+		while (fgets(inputline, 63, input) != nullptr)
 		{
+			line = inputline;
 			if (has_swap(line))
 			{
 				swap += get_swap(line);
 			}
 		}
 
-		in.close();
-	}
-	else
-	{
-		swap = UNKNOWN_SWAP;
+		fclose(input);
 	}
 
-	return (in.bad() ? UNKNOWN_SWAP : swap);
+	return (errno == 0 ? swap : UNKNOWN_SWAP);
 }
 
