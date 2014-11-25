@@ -7,3 +7,4 @@
 std::string substring_at(const std::string& arg, const std::string& delimiter, int index);
 
 #endif /* SUBSTRING_H_ */
+

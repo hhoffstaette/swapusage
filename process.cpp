@@ -1,33 +1,38 @@
 
-#include <string>
-#include <vector>
-#include <dirent.h>
-#include <stdio.h>
-
 #include "pid.h"
 #include "process.h"
 #include "swap.h"
 
+#include <dirent.h>
+#include <stdio.h>
+
 using namespace std;
+
+const string UNKNOWN_PROCESS_NAME = "<unknown>";
 
 string get_process_name(pid_t pid)
 {
-	const string filename = "/proc/" + to_string(pid) + "/comm";
-	string name = UNKNOWN_PROCESS_NAME;
+	string process_name;
 
-	FILE* input = fopen(filename.c_str(), "r");
+	const string input_name = "/proc/" + to_string(pid) + "/comm";
+	FILE* input = fopen(input_name.c_str(), "r");
 	if (input != nullptr)
 	{
 		char line[64];
 		if (fscanf(input, "%s63", line) == 1)
 		{
-			name = line;
+			process_name = line;
 		}
 
 		fclose(input);
 	}
+	else
+	{
+		// should never happen
+		process_name = UNKNOWN_PROCESS_NAME;
+	}
 
-	return name;
+	return process_name;
 }
 
 ProcessInfo get_process_info(pid_t pid)
@@ -35,7 +40,7 @@ ProcessInfo get_process_info(pid_t pid)
 	return {pid, get_swap_for_pid(pid), get_process_name(pid)};
 }
 
-vector<ProcessInfo> get_process_info()
+vector<ProcessInfo> get_process_infos()
 {
 	vector<ProcessInfo> procs;
 

@@ -1,13 +1,13 @@
 
+#include "pid.h"
+#include "process.h"
+#include "swap.h"
+
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include "pid.h"
-#include "process.h"
-#include "swap.h"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	if (argc == 1)
 	{
 		// no pid: collect all processes
-		procs = get_process_info();
+		procs = get_process_infos();
 	}
 	else
 	{

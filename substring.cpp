@@ -1,7 +1,7 @@
 
-#include <string>
-
 #include "substring.h"
+
+#include <string>
 
 using namespace std;
 

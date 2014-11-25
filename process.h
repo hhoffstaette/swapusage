@@ -3,9 +3,9 @@
 #define PROCESS_H_
 
 #include <string>
+#include <unistd.h>
 #include <vector>
 
-// {pid, name, swap in kb}
 struct ProcessInfo
 {
 	pid_t pid;
@@ -19,16 +19,16 @@ struct ProcessInfo
 };
 
 // returned when the name of a process could not be determined
-static const std::string UNKNOWN_PROCESS_NAME = "<unknown>";
+extern const std::string UNKNOWN_PROCESS_NAME;
 
 // get only the name of a specific process
 std::string get_process_name(pid_t pid);
 
-// get info for all processes
-std::vector<ProcessInfo> get_process_info();
-
 // get info for specific process
 ProcessInfo get_process_info(pid_t pid);
+
+// get infos for all processes
+std::vector<ProcessInfo> get_process_infos();
 
 #endif /* PROCESS_H_ */
 

@@ -1,11 +1,13 @@
 
-#include <string>
-#include <stdio.h>
-
 #include "swap.h"
 #include "substring.h"
 
+#include <limits>
+#include <stdio.h>
+
 using namespace std;
+
+const long UNKNOWN_SWAP = numeric_limits<long>::min();
 
 static const string PREFIX = "Swap:";
 static const string SUFFIX = " 0 kB";
@@ -31,10 +33,10 @@ static long get_swap(const string& line)
 
 long get_swap_for_pid(pid_t pid)
 {
-	const string filename = "/proc/" + to_string(pid) + "/smaps";
 	long swap = 0;
 
-	FILE* input = fopen(filename.c_str(), "r");
+	const string input_name = "/proc/" + to_string(pid) + "/smaps";
+	FILE* input = fopen(input_name.c_str(), "r");
 	if (input != nullptr)
 	{
 		string line;
@@ -51,6 +53,8 @@ long get_swap_for_pid(pid_t pid)
 		fclose(input);
 	}
 
+	// tricky: the proc entry is marked readable but really is not,
+	// so we get EPERM only when trying to read.
 	return (errno == 0 ? swap : UNKNOWN_SWAP);
 }
 
