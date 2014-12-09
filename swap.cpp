@@ -1,9 +1,10 @@
 
 #include "swap.h"
-#include "substring.h"
 
+#include <cstring>
+#include <cstdio>
 #include <limits>
-#include <stdio.h>
+#include <string>
 
 using namespace std;
 
@@ -12,18 +13,17 @@ const long UNKNOWN_SWAP = numeric_limits<long>::min();
 static const string PREFIX = "Swap:";
 static const string SUFFIX = " 0 kB";
 
-static bool has_swap(const string& line)
+static bool has_swap(const char* line)
 {
-	return (line.compare(0, PREFIX.length(), PREFIX) == 0)
-	&& !(line.compare(line.length() - SUFFIX.length(), SUFFIX.length(), SUFFIX) == 0);
+	return (strncmp(line, PREFIX.c_str(), PREFIX.length()) == 0) &&
+	!(strncmp(line + (strlen(line) - SUFFIX.length()), SUFFIX.c_str(), SUFFIX.length()) == 0);
 }
 
-static long get_swap(const string& line)
+static long get_swap(const char* line)
 {
-	const string value = substring_at(line, " ", 1);
 	long kb = 0;
 
-	if (sscanf(value.c_str(), "%ld", &kb) == 1)
+	if (sscanf(line + PREFIX.length(), "%ld", &kb) == 1)
 	{
 		return kb;
 	}
@@ -37,13 +37,12 @@ long get_swap_for_pid(pid_t pid)
 
 	const string input_name = "/proc/" + to_string(pid) + "/smaps";
 	FILE* input = fopen(input_name.c_str(), "r");
+
 	if (input != nullptr)
 	{
-		string line;
-		char inputline[64];
-		while (fgets(inputline, 63, input) != nullptr)
+		char line[64];
+		while (fgets(line, 63, input) != nullptr)
 		{
-			line = inputline;
 			if (has_swap(line))
 			{
 				swap += get_swap(line);
