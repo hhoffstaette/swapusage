@@ -10,31 +10,33 @@ using namespace std;
 
 const string UNKNOWN_PROCESS_NAME = "<unknown>";
 
+static const string INPUT_NAME_FORMAT = "/proc/%u/comm";
+
 string get_process_name(pid_t pid)
 {
-	string process_name;
+	char input_name[128];
 
-	const string input_name = "/proc/" + to_string(pid) + "/comm";
-	FILE* input = fopen(input_name.c_str(), "r");
-
-	if (input != nullptr)
+	if (sprintf(input_name, INPUT_NAME_FORMAT.c_str(), pid) > 0)
 	{
-		char line[64];
+		FILE* input = fopen(input_name, "r");
 
-		if (fscanf(input, "%s63", line) == 1)
+		if (input != nullptr)
 		{
-			process_name = line;
+			string process_name = UNKNOWN_PROCESS_NAME;
+			char line[64];
+
+			if (fscanf(input, "%s63", line) == 1)
+			{
+				process_name = line;
+			}
+
+			fclose(input);
+			return process_name;
 		}
-
-		fclose(input);
-	}
-	else
-	{
-		// should never happen
-		process_name = UNKNOWN_PROCESS_NAME;
 	}
 
-	return process_name;
+	// should never happen
+	return UNKNOWN_PROCESS_NAME;
 }
 
 ProcessInfo get_process_info(pid_t pid)

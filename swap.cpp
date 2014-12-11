@@ -10,46 +10,57 @@ using namespace std;
 
 const long UNKNOWN_SWAP = numeric_limits<long>::min();
 
-static const string PREFIX = "Swap:";
-static const string SUFFIX = " 0 kB";
+static const string INPUT_NAME_FORMAT = "/proc/%u/smaps";
+static const string SWAP_PREFIX = "Swap:";
+static const string SWAP_SUFFIX = " 0 kB";
 
 static bool has_swap(const char* line)
 {
-	return (strncmp(line, PREFIX.c_str(), PREFIX.length()) == 0) &&
-	!(strncmp(line + (strlen(line) - SUFFIX.length()), SUFFIX.c_str(), SUFFIX.length()) == 0);
+	// check prefix
+	if (strncmp(line, SWAP_PREFIX.c_str(), SWAP_PREFIX.length()) == 0)
+	{
+		// check suffix
+		const char* suffix = line + (strlen(line) - SWAP_SUFFIX.length());
+		return (strncmp(suffix, SWAP_SUFFIX.c_str(), SWAP_SUFFIX.length()) != 0);
+	}
+
+	// no Swap
+	return false;
 }
 
 static long get_swap(const char* line)
 {
-	long kb = 0;
+	long kb = UNKNOWN_SWAP;
+	const char* swap_value = line + SWAP_PREFIX.length();
 
-	if (sscanf(line + PREFIX.length(), "%ld", &kb) == 1)
-	{
-		return kb;
-	}
-
-	return UNKNOWN_SWAP;
+	sscanf(swap_value, "%ld", &kb);
+	return kb;
 }
 
 long get_swap_for_pid(pid_t pid)
 {
-	long swap = 0;
+	long swap = UNKNOWN_SWAP;
 
-	const string input_name = "/proc/" + to_string(pid) + "/smaps";
-	FILE* input = fopen(input_name.c_str(), "r");
-
-	if (input != nullptr)
+	char input_name[128];
+	if (sprintf(input_name, INPUT_NAME_FORMAT.c_str(), pid) > 0)
 	{
-		char line[64];
-		while (fgets(line, 63, input) != nullptr)
-		{
-			if (has_swap(line))
-			{
-				swap += get_swap(line);
-			}
-		}
+		FILE* input = fopen(input_name, "r");
 
-		fclose(input);
+		if (input != nullptr)
+		{
+			char line[64];
+			swap = 0;
+
+			while (fgets(line, 63, input) != nullptr)
+			{
+				if (has_swap(line))
+				{
+					swap += get_swap(line);
+				}
+			}
+
+			fclose(input);
+		}
 	}
 
 	// tricky: the proc entry is marked readable but really is not,
