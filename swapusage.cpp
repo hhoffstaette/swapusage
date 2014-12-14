@@ -76,10 +76,10 @@ int main(int argc, char* argv[])
 		sort(procs.begin(), procs.end(), orderBySwap);
 
 		cout << "====================================" << endl;
-		cout << setw(8) << "Swap KB";
-		cout << setw(6) << "pid";
+		cout << setw(8) << "Swap kB";
+		cout << setw(6) << "PID";
 		cout << "  ";
-		cout << setw(16) << left << "name" << endl;
+		cout << setw(16) << left << "Name" << endl;
 		cout << "====================================" << endl;
 
 		long all_swap = 0;
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 		if (all_procs)
 		{
 			cout << "------------------------------------" << endl;
-			cout << "Overall Swap used: " << all_swap << " KB" << endl;
+			cout << setw(8) << right << all_swap << " kB total." << endl;
 		}
 	}
 
