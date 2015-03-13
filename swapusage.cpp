@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 			return EXIT_SUCCESS;
 		}
 
-		int pid = to_pid(pidarg);
+		int pid = to_pid(pidarg.c_str());
 		if (pid == UNKNOWN_PID)
 		{
 			cerr << "Not a process id: " << pidarg << endl;
