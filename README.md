@@ -15,7 +15,7 @@ rewrite one of them in C++11.
 
 **Installation**
 
-- Type "make" & copy the executable whereeveer you want.
+- Type "make" & copy the executable wherever you want.
 - If you encounter any problems then please fix them and send a pull request. :)
 
 Gentoo users can find an ebuild in my [overlay](https://github.com/hhoffstaette/portage).
