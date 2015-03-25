@@ -5,10 +5,9 @@ swapusage
 
 This little utility for Linux shows the amount of swapped memory for running processes.
 
-Contrary to popular belief this is actually _not that easy_, and popular tools like
-```top``` either don't do this at all, or do it completely wrong; see
-[this](http://stackoverflow.com/questions/479953/how-to-find-out-which-processes-are-swapping-in-linux/)
-discussion on StackOverflow for some background.
+Contrary to popular belief this is actually _not that easy_, and tools like
+```top``` either don't do this at all, or completely wrong; see
+[this discussion on StackOverflow](http://stackoverflow.com/questions/479953/how-to-find-out-which-processes-are-swapping-in-linux/) for some background.
 
 After finding some of the proposed scripts unacceptably inefficient, I decided to
 rewrite one of them in C++11.
