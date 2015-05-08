@@ -39,14 +39,9 @@ string get_process_name(pid_t pid)
 	return UNKNOWN_PROCESS_NAME;
 }
 
-ProcessInfo get_process_info(pid_t pid)
+vector<unique_ptr<ProcessInfo>> get_process_infos()
 {
-	return {pid, get_swap_for_pid(pid), get_process_name(pid)};
-}
-
-vector<ProcessInfo> get_process_infos()
-{
-	vector<ProcessInfo> procs;
+	vector<unique_ptr<ProcessInfo>> procs;
 
 	DIR* dir = opendir("/proc");
 
@@ -64,7 +59,7 @@ vector<ProcessInfo> get_process_infos()
 
 				if (swap > 0)
 				{
-					procs.emplace_back(pid, swap, get_process_name(pid));
+					procs.emplace_back(make_unique<ProcessInfo>(pid, swap, get_process_name(pid)));
 				}
 			}
 		}

@@ -12,14 +12,14 @@
 using namespace std;
 
 // lambda for sorting by swap
-static auto orderBySwap = [](const ProcessInfo& first, const ProcessInfo& second)
+static auto orderBySwap = [](const unique_ptr<ProcessInfo>& first, const unique_ptr<ProcessInfo>& second)
 {
-	return first.swap > second.swap;
+	return first->swap > second->swap;
 };
 
 int main(int argc, char* argv[])
 {
-	vector<ProcessInfo> procs;
+	vector<unique_ptr<ProcessInfo>> procs;
 	bool all_procs = true;
 
 	if (argc == 1)
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 		// finally collect valid process info
 		if (swap > 0)
 		{
-			procs.emplace_back(pid, swap, name);
+			procs.emplace_back(make_unique<ProcessInfo>(pid, swap, name));
 			all_procs = false;
 		}
 	}
@@ -84,13 +84,13 @@ int main(int argc, char* argv[])
 
 		long all_swap = 0;
 
-		for (ProcessInfo& p: procs)
+		for (unique_ptr<ProcessInfo>& p: procs)
 		{
-			cout << setw(8) << right << p.swap;
-			cout << setw(6) << right << p.pid;
+			cout << setw(8) << right << p->swap;
+			cout << setw(6) << right << p->pid;
 			cout << "  ";
-			cout << setw(16) << left << p.name << endl;
-			all_swap += p.swap;
+			cout << setw(16) << left << p->name << endl;
+			all_swap += p->swap;
 		}
 
 		if (all_procs)

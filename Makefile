@@ -1,7 +1,7 @@
 CC = gcc
 CXX = g++
 CXXFLAGS = -march=native -O2 -fmessage-length=0 -Wall
-CXXSTDFLAGS = -std=c++11 -pipe
+CXXSTDFLAGS = -std=c++14 -pipe
 LDFLAGS =
 OBJS = pid.o process.o swap.o swapusage.o
 LIBS = 
